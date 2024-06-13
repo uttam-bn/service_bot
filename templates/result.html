@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('resultContent');
+            html2pdf().from(element).save('complaint_details.pdf');
+        }
+    </script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div id="resultContent" class="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
+        <h2 class="text-2xl font-bold mb-4 text-center">Complaint Details</h2>
+        <p><strong>Complaint ID:</strong> {{ complaint_id }}</p>
+        <p><strong>Company:</strong> {{ company }}</p>
+        <p><strong>Vehicle Name:</strong> {{ vehicle_name }}</p>
+        <p><strong>Dealer Name:</strong> {{ dealer_name }}</p>
+        <p><strong>Dealer Address:</strong> {{ dealer_address }}</p>
+        <p><strong>Odometer Reading:</strong> {{ odometer_reading }} KM</p>
+        <p><strong>Sale Date:</strong> {{ sale_date }}</p>
+        <p><strong>City:</strong> {{ city }}</p>
+        <p><strong>Infotainment Serial Number:</strong> {{ infotainment_serial_no }}</p>
+        <div class="mt-4 text-center">
+            <button onclick="downloadPDF()" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-700">Download PDF</button>
+        </div>
+    </div>
+</body>
+</html>

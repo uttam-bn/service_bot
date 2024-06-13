@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center ">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-lg">
+        <h1 class="text-2xl font-bold mb-6 text-center text-green-700">File a Complaint</h1>
+        <form id="complaintForm" onsubmit="submitComplaint(event)" class="space-y-4">
+            <div>
+                <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                <select id="company" name="company" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    <option value="Tata">Tata</option>
+                    <option value="Maruti Suzuki">Maruti Suzuki</option>
+                </select>
+            </div>
+            <div>
+                <label for="vehicle_name" class="block text-sm font-medium text-gray-700">Vehicle Name</label>
+                <input type="text" id="vehicle_name" name="vehicle_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="odometer_reading" class="block text-sm font-medium text-gray-700">Odometer Reading (in KM)</label>
+                <input type="number" id="odometer_reading" name="odometer_reading" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="sale_date" class="block text-sm font-medium text-gray-700">Vehicle Sale Date</label>
+                <input type="date" id="sale_date" name="sale_date" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="dealer_name" class="block text-sm font-medium text-gray-700">Dealer Name</label>
+                <input type="text" id="dealer_name" name="dealer_name" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="dealer_address" class="block text-sm font-medium text-gray-700">Dealer Address</label>
+                <input type="text" id="dealer_address" name="dealer_address" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                <input type="text" id="city" name="city" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="infotainment_serial_no" class="block text-sm font-medium text-gray-700">Infotainment Serial Number</label>
+                <input type="text" id="infotainment_serial_no" name="infotainment_serial_no" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div>
+                <label for="file" class="block text-sm font-medium text-gray-700">Upload Infotainment Image</label>
+                <input type="file" id="file" name="file" required class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-700">Submit Complaint</button>
+            </div>
+        </form>
+        <div id="resultContainer" class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-md"></div>
+    </div>
+    <script>
+        async function submitComplaint(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('complaintForm');
+            const formData = new FormData(form);
+
+            const response = await fetch('/file_complaint', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.innerHTML = '';
+
+            if (result.fulfillmentText) {
+                const message = document.createElement('p');
+                message.textContent = result.fulfillmentText;
+                resultContainer.appendChild(message);
+
+                if (!result.is_leaf) {
+                    const details = `
+                        <div class="mt-4 text-center">
+                            <a href="/result?complaint_id=${result.complaint_id}" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-700">View Complaint Details</a>
+                        </div>
+                    `;
+                    resultContainer.innerHTML += details;
+                }
+            } else {
+                resultContainer.textContent = 'An error occurred while filing the complaint.';
+            }
+        }
+    </script>
+</body>
+</html>
