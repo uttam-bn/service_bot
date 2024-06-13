@@ -1,7 +1,5 @@
-import os
 from PIL import Image
 import numpy as np
-import requests
 from io import BytesIO
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator

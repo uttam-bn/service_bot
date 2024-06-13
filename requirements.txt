@@ -1,0 +1,11 @@
+flask
+database
+model
+datetime
+random
+os
+sqlite3
+PIL
+numpy
+tensorflow
+
