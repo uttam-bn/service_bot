@@ -1,11 +1,16 @@
-flask
+Flask==2.3.2
+SQLAlchemy==2.0.18
+scikit-learn==1.3.0
+Pillow==9.5.0
+numpy==1.24.3
 database
 model
 datetime
 random
 os
-sqlite3
-PIL
-numpy
-tensorflow
+
+
+
+
+
 
