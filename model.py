@@ -17,7 +17,7 @@ epochs = 5
 
 train_datagen = ImageDataGenerator(
     preprocessing_function=preprocess_input,
-    validation_split=0.2,  # 80% for training and 20% for validation
+    validation_split=0.2,  
     horizontal_flip=True,
     vertical_flip=True,
     rotation_range=20,
@@ -41,11 +41,11 @@ validation_generator = train_datagen.flow_from_directory(
     subset='validation'
 )
 
-# Build the model using MobileNetV2
+
 base_model = MobileNetV2(input_shape=(img_height, img_width, 3),
                          include_top=False,
                          weights='imagenet')
-base_model.trainable = False  # Freeze the base model
+base_model.trainable = False  
 
 model = Sequential([
     base_model,
@@ -68,7 +68,7 @@ model.fit(
 class_indices = train_generator.class_indices
 
 def verify_image(image, class_indices, img_height=128, img_width=128):
-    # Load and preprocess the image
+    
     img = Image.open(image)
     img = img.resize((img_height, img_width))
     img_array = tf.keras.preprocessing.image.img_to_array(img)
@@ -81,10 +81,10 @@ def verify_image(image, class_indices, img_height=128, img_width=128):
     accuracy = predictions[0][predicted_class[0]]
     class_labels = {v: k for k, v in class_indices.items()}
     
-    # Get the folder name from the class label mapping
+    
     folder_name = class_labels.get(predicted_class[0], None)
     
-    # Check if the folder name contains 'leaf' or 'leaves'
+    
     leaf_keywords = ['leaf', 'leaves']
     if folder_name and any(keyword in folder_name.lower() for keyword in leaf_keywords):
         return "Leaf", 0.0

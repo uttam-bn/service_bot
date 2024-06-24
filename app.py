@@ -35,11 +35,11 @@ def file_complaint():
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
-            # Verify image and get the company and accuracy
+            
             company, accuracy = verify_image(filepath, class_indices)
 
             if company == "Leaf":
-                response_text = "Kindly upload a proper infotainment image. Leaf images are not allowed."
+                response_text = "Kindly upload a proper infotainment image. these images are not allowed."
                 return jsonify({'fulfillmentText': response_text, 'is_leaf': True})
 
             dealer_name = request.form['dealer_name']
@@ -52,14 +52,14 @@ def file_complaint():
             infotainment_serial_no = request.form['infotainment_serial_no']
             image_url = filepath
 
-            # Validate odometer reading
+            # odometer reading
             if int(odometer_reading) > 40000:
-                return jsonify({'fulfillmentText': 'Sorry, your warranty has expired. Currently, we are not able to register your complaint.'}), 400
+                return jsonify({'fulfillmentText': 'Sorry, your warranty has expired. Warranty claimed if the odometer reading was within 40000 KM, Currently we are not able to register your complaint. Kindly contact our service team.'}), 400
 
-            # Validate sale date
+            # check sale date
             sale_date_obj = datetime.strptime(sale_date, '%Y-%m-%d')
             if sale_date_obj < datetime.now() - timedelta(days=730):  # 2 years = 730 days
-                return jsonify({'fulfillmentText': 'Sorry, your warranty has expired. Currently, we are not able to register your complaint.'}), 400
+                return jsonify({'fulfillmentText': 'Sorry, your warranty has expired. 2 years completed from the date of sale of the vehicle, Currently, we are not able to register your complaint. Kindly contact our service team.'}), 400
 
             # Check infotainment serial number
             existing_complaint = check_infotaiment_serial(infotainment_serial_no)
@@ -100,4 +100,4 @@ def result():
         return "No complaint ID provided", 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080)
